@@ -1,0 +1,317 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{graphicx}
+
+\title{PI-Fragen}
+\author{Sebastian Benkel, Moritz Schult}
+\date{January 2017}
+
+\begin{document}
+\maketitle
+
+\section{Fragenkatalog für PI-3 Fachgespräch}
+
+
+\textbf{1. Was bedeutet Striktheit, und welche in Haskell definierbaren Funktionen haben diese Eigenschaft?}
+\\
+\\
+Strikt bedeutet das ein Ausdruck \textbf{innermost-first}(von innen nach au\ss en) ausgewertet wird. dadurch f\"uhren undefinierte Werte in jedem Fall zum Abbruch.
+
+
+In Haskell werden Ausdr\"ucke nach dem \textbf{outermost-first}(von au\ss en nach innen) ausgewertet. Haskell kann also mit undefinierten Eingaben umgehen, solange sie nicht genutzt werden.
+
+Bei Terminierenden Eingaben ist das Ergebnis unabh\"angig von der Auswertungsrichtung(Konfluenz).
+\\
+\\
+\textbf{2. Was ist ein algebraischer Datentyp, und was ist ein Konstruktor?}
+\\
+\\
+Algebraische Datentypen sind Datentypen die \"uber ihren Konstruktor konstruiert werden. Sie können mathematische Eigenschaften haben, oder auch eine Aufz\"ahlung, mit oder ohne Argumente sein.
+Der Unterschied zu einem abstrakten Datentyp ist, dass in einem algebraischen Datentypen jedes Element nur einmal vorkommen kann, während in einem abstrakten jedes Element mehrfach vertreten sein kann. Der algebraische Datentyp entspricht in dieser Funktion also einer Menge.
+
+Ein Konstruktor baut einen Datentyp. Entweder mit einem oder mehren Daten(auch rekursiv) oder ohne Inhalt.
+\\
+\\
+\textbf{3. Was sind die drei Eigenschaften, welche die Konstruktoren eines algebraischen Datentyps auszeichnen, was ermöglichen sie und warum?}
+\\
+\\
+\emph{Disjunkt} - Zwei Konstruktoren sind gleich, oder nicht.
+\\
+\emph{Injektiv} - Wenn zwei Daten mit gleichem Konstruktor sich gleichen, so ist ihr Inhalt gleich.
+
+Konstruktoren erzeugen Datentypen.
+
+Dies macht die Fallunterscheidung wohldefiniert, einfach zu benutzen.
+\\
+\\
+\textbf{4. Welche zusätzliche Mächtigkeit wird durch Rekursion bei algebraischen Datentypen in der Modellierung erreicht? Was läßt sich mit rekursiven Datentypen modellieren, was sich nicht durch nicht-rekursive Datentypen erreichen läßt?}
+\\
+\\
+Ein Konstuktor kann sich selbst auf der Rechten Seite(in der Definition) aufrufen.
+Dies erlaubt die Aggregation von unendlich gro\ss en Wertemengen.
+ (ein konstanter Konstruktor ++ ein linear rekursiver Konstruktor)
+\\
+\\
+\textbf{5. Was ist der Unterschied zwischen Bäumen und Graphen, in Haskell modelliert?}
+\\
+\\
+In Haskell lassen sich beide im selben Datentyp modellieren. Bei der Traversion muss dann unterschieden werden.
+\\
+\\
+\textbf{6. Was sind die wesentlichen Gemeinsamkeiten, und was sind die wesentlichen Unterschiede zwischen algebraischen Datentypen in Haskell, und Objekten in Java?}
+\\
+\\
+Objekte in Java haben einen Zustand der ver\"andert werden kann. Datentypen in Haskell sind unver\"anderbar. Sie werden erstellt und wenn man etwas \"andern m\"ochte erstellt man ihn neu.
+\\
+\\
+\textbf{7. Was ist Polymorphie?}
+\\
+\\
+Es beschreibt die Eigenschaft eines Datentyps oder einer Funktion auf mehr als einem Datentypen zu laufen. Es k\"onnen Einschr\"ankungen definiert werden.
+\\
+\\
+\textbf{8. Welche zwei Arten der Polymorphie haben wir kennengelernt, und wie unterschieden sie sich?}
+\\
+\\
+ \emph{Parametrische Polymorphie} und \emph{Ad-Hoc Polymorphie}. 
+\\
+\emph{Parametrische Polymorphie} entsteht durch vollständige Abstraktion von Typen durch Typvariablen($\alpha$ $\beta$ ....) in der Funktionssignatur.
+
+Ad Hoc Polymorphie entsteht durch  Einschr\"ankung der Polymorphie mit einer \textbf{Typklasse}(Eq, Show ...).
+
+elem :: Eq $\alpha$ =$>$ $\alpha \rightarrow$ [$\alpha$] $\rightarrow$ Bool
+
+\textbf{Deklaration:}
+
+class Show $\alpha$ where
+
+show :: $\alpha \rightarrow$ String
+
+\textbf{Instantiierung:}
+
+instance Show Bool where
+
+show True = "Wahr"
+
+show False = "Falsch"
+
+Typklassen können andere voraussetzen:
+
+class Eq $\alpha$ =$>$ Ord $\alpha$ where
+\\
+\\
+\textbf{9. Was ist der Unterschied zwischen Polymorphie in Haskell, und Polymorphie in Java?}
+\\
+\\
+\\
++++Haskell erkennt per Typherleitung (\textit{Typinferenz}) ob eine Funktion zul\"assig ist (add a b = a  + (length b)) oder nicht(add a b = b  + (length b $\rightarrow$ Typfehler).
+Parametrische Polymorphie ist in Java umst\"andlich, da Typherleitung nicht gegeben ist.
+
+Ad-Hoc Polymorphie ist in Java flexibler, da beliebige Parameter etc.
+
+(über Interface und abstrakte Klassen).
+\\
+\\
+\\
+\textbf{10. Was kennzeichnet strukturell rekursive Funktionen, wie wir sie in der Vorlesung kennengelernt haben, und wie sind sie durch die Funktion foldr darstellbar?}
+\\
+\\
+Strukturell Rekursive Funktionen zeichnen sich dadurch aus das sie rekursiv durch eine Struktur gehen und auf jedem Datum ihre Funktion aufrufen.
+
+Sie lassen sich durch foldr umsetzen in dem foldr ihre Funktion ausf\"uhrt und das Ergebnis als neues Element an eine Liste h\"angt(faltet).
+\\
+z.B.
+
+map' :: (a -> b) -> [a] -> [b
+]
+map' f a = foldr ((:).f) [] a
+\\
+\\
+\\
+\\
+\\
+\textbf{11. Welche anderen geläufigen Funktionen höherer Ordnung kennen wir?}
+\\
+\\
+\\
+foldl, map, filter, addAll, etc
+\\
+\\
+\\
+\\
+\\
+\textbf{12. Was ist n-Kontraktion, und warum ist es zulässig?}\\
+\\
+n-Kontraktion ist der gemeinsame Begriff für Abstraktion oder Reduktion von Funktionsargumenten:\\
+\\
+1. sum xs = foldr (+) 0 xs\\
+2. sum = foldr (+) 0\\
+\\
+Eine Überführung von 1. in 2. ist \textit{Abstraktion}, andersrum \textit{Reduktion}
+
+\textcolor{red}{Ist in Haskell vorprogrammiert.}
+\\
+\\
+\textbf{13. Wann verwendet man foldr, wann foldl, und unter welchen Bedingungen ist das Ergebnis das gleiche?}\\
+\\
+\emph{foldr} bietet sich für unendliche Listen an, da sie stets schon w\"ahrend der Berechnung Ergebnisse liefert, es handelt sich um \textbf{Strukturelle Rekursion}. \emph{foldl} ist nur für endliche Listen anwendbar, ist allerdings Strikt und Endrekursiv und damit i.d.R. effizienter. \textbf{foldl} entspricht Iteration(einer \textbf{for-Schleife} in anderen Sprachen).
+
+Zum Umkehren von Listen bietet sich \textbf{foldl} an, da es O(n) hat, und \textbf{foldr} O($n^2$).
+\\
+\\
+Wenn die Funktion mit der Startmenge einen Monoid bildet, ist das Ergebnis das gleiche.\\
+\\
+Ein Monoid M(Operation,Startwert) ist dadurch definiert, dass die Operation mit dem Startelement und einem beliebigen anderen Element desselben Typs Rechtsneutral, Linksneutral und Assoziativ ist. Zum Beispiel ist M'(+,0) ein Monoid, da:\\
+$x+0 = x\\
+0+x = x\\
+x+(y+0) = (x+y)+0$\\
+\\
+\textbf{14. foldr ist die ''kanonische einfach rekursive Funktion'' (Vorlesung). Was bedeutet das, und warum ist das so? Für welche Datentypen gilt das?}\\
+\\
+Alle strukturell rekursiven Funktionen sind als Instanz von foldr darstellbar, da foldr eine\"ubergebene Funktion auf alle Elemente einer Liste und den davor ausgerechneten wert anwendet. somit l\"asst sich z.B. map durch \"{}map' f a = foldr ((:).f) [] a\"{}
+
+foldr ist auf alle Daten vom Typ Foldable anwendbar. Jeder Datentyp in Foldable hat genau eine Definition von fold.
+\\
+\\
+\\
+\textcolor{red}{\textbf{15. Wann kann foldr f a xs auch für ein zyklisches Argument xs (bspw. eine zyklische Liste) terminieren?}}
+\\
+\\
+\\
+garnicht?
+\\
+\\
+\\
+\\
+\\
+\textbf{16. Warum sind endrekursive Funktionen im allgemeinen schneller als nicht-endrekursive Funktionen? Unter welchen Voraussetzungen kann ich eine Funktion in endrekursive Form überführen?}
+\\
+Endrekursion ist nur bei srikten Funktionen schneller, denn bei strikten Argumenten, lässt sich das Ergebnis vor dem Aufruf auswerten. Dadurch herrscht konstanter Platz bei der Endrekursion(Das ablegen und laden der Zwischenschritte dauert).\\
+Endrekursive Funktionen können den letzten Stackeintrag wieder verwerten und somit nie einen Stacküberlauf auslösen. Die Voraussetzung für eine Überführung in eine endrekursive Form sind:\\
+\\
+1. Die Funktion muss linear rekursiv sein (ein rekursiver Aufruf(der nicht geschachtelt ist) dar\"uber nur Fallunterscheidung)\\
+2. Die Operation mit dem Startwert muss ein Monoid bilden (Erklärung oben bei 13.)\\
+\\
+\\
+\textbf{17. Was ist ein abstrakter Datentyp (ADT)?}
+\\
+ADTs sind Datentypen die so gekapselt werden(in Module) das sie nur mit vordefinierten Funktionen erstellt und ausgelesen werden k\"onnen.
+Dies ist m\"oglich da bei Modulen festgelegt werden kann was exportiert wird(keine Konstruktoren $\rightarrow$ keine selbstst\"andige Konstruktion). Dies erm\"oglicht garantierte Invarianz(Zugesicherte Einhaltung bestimmter Bedingungen(z.B. keine doppelten Eintr\"age in Aggregation))
+Ein Abstrakter Datentyp beinhaltet einen oder mehrere Datentyp/en, der/die durch Operationen definiert ist/sind und dessen Werte nur durch diese Operationen erstellt werden können.
+\\
+\\
+\textbf{18. Was sind Unterschiede und Gemeinsamkeiten zwischen ADTs und Objekten, wie wir sie aus Sprachen wie Java kennen?}
+\\
+Gemeinsam haben sie, dass sie die Verkapselung einer Implementation darstellen.
+
+Die Erstellung beider kann an bestimmte Bedingungen gekn\"upft sein(In java ggf. durch exceptions)
+\\
+Unterschiede:\\
+Objekte haben Konstruktoren, ADTs nicht (gleiche Operationen für unterschiedliche Ergebnisse)\\
+Objekte haben einen internen Zustand, ADTs sind 
+referentiell transparent, d.h. ihre Werte sind von der Aufrufumgebung abhängig(x = 1 + x ist in Haskell nicht zu\"assig).\\
+\\
+\\
+\\
+\\
+\\
+\textbf{19. Wozu dienen Module in Haskell?}
+\\
+Module sind einzelne Übersetzungseinheiten, die eine minimale kapselbare Einheit bilden. Sie dienen der Übersichtlichkeit, der verbesserten technischen Handhabbarkeit durch die getrennte Übersetzung und der konzeptionellen Handhabbarkeit durch die Verkapselung. Sie erm\"oglichen ADTs.
+
+Bsp:\\
+module ModulA(\\
+NutzbarerKontainer1,\\
+nutzbareFunktion1,\\
+nutzbareFunktion2,\\
+nutzbareFunktion3) where\\
+\\
+\\
+\\
+    \textcolor{red}{\textbf{20. Wie können wir die Typen und Operationen der Signatur eines abstrakten Datentypen grob klassifizieren, und welche Auswirkungen hat diese Klassifikation auf die zu formulierenden Eigenschaften?}}
+\\
+\\
+Die Signatur eines abstrakten Datentyps besteht aus den Typen und der Signatur der darüber definierten Funktionen. Die Signatur ist die Sprache (Syntax) um Eigenschaften zu beschrieben(Datenklassen der zul\"assigen Eingaben zum Beispiel). Dabei lässt sich durch die Signatur der ADT typkorrekt benutzen. Jedoch lässt sich durch die Signatur nicht die Bedeutung (Semantik) beschreiben.\\
+\\
+\\
+\\
+\\
+\\
+\textbf{21. Warum „finden Tests Fehler“, aber „zeigen Beweise Korrektheit“, wie in der Vorlesung behauptet? Stimmt das immer?}
+\\
+Man kann durch Tests die Anwesenheit von Fehlern zeigen, jedoch nicht die Abwesenheit von Fehlern(au\ss er durch komplette Abdeckung, ist aber im Normalfall unrealistisch). Durch Beweise lässt sich jedoch allgemein sagen, ob ein Programm funktioniert. Tests können nur für spezifische (nicht allgemeine) Fälle zeigen, ob das Programm funktioniert, bzw. nicht funktioniert. \\
+\\
+\\
+\\
+\\
+\\
+\\
+\textcolor{red}{\textbf{22. Müssen Axiome immer ausführbar sein? Welche Axiome wären nicht ausführbar?}}
+\\
+Axiome sind Prädikate über den Operationen der Signatur.\\
+\\
+\\
+\\
+\\
+\\
+\\
+\textbf{23. Der Datentyp Stream α ist definiert als data Stream α = Cons α (Stream α)
+Gibt es für diesen Datentyp ein Induktionsprinzip? Ist es sinnvoll?}
+\\
+Da der Datentyp rekursiv definiert ist, ist ein Induktionsprinzip nicht sinnvoll. Denn für die Induktion brauchen wir eine Induktionsvoraussetzung. Diese wiederum definiert das Verhalten für ein Element (i.d.R. das kleinste Element) explizit. Dieses existiert jedoch durch die rekursive Darstellung nicht, wodurch das aufstellen der Induktionsvoraussetzung unmöglich wird. \\
+Sollte es jedoch eine zusätzliche Definition geben, die ein Startelement definiert (natürlich nicht rekursiv), gibt es für diesen Datentyp ein Induktionsprinzip.
+\\
+\\
+\\
+\\
+\\
+\\
+\textcolor{red}{\textbf{24. Welche nichtausführbaren Prädikate haben wir in der Vorlesung kennengelernt?}}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\textcolor{red}{\textbf{25. Wie kann man in einem Induktionsbeweis die Induktionsvoraussetzung stärken, und wann ist das nötig?}}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\textbf{26. Warum ist die Erzeugung von Zufallszahlen eine Aktion?}
+\\
+(?) Die Erzeugung von Zufallszahlen benötigt eine Seed, die nicht im Programm selber erstellt werden kann (um möglichst großen Zufall zu garantieren) sondern wird vom System erzeugt. Das kann zu Seiteneffekten führen, weswegen die Erzeugung von Zufallszahlen eine Aktion sein muss. (?)\\
+\\
+\\
+\\
+\\
+\\
+\\
+\textbf{27. Warum ist auch das Schreiben in eine Datei eine Aktion?}
+\\
+Das schreiben in eine Datei kann ebenfalls mit Seiteneffekten einhergehen (ist also nicht referentiell transparent)(Aktion kann verweigert werden wenn Datei bereits besteht und Schreibgesch\"utzt ist, oder keine Schreibberechtigung vorliegt)%nachschauen, was das bedeutet
+. Daher ist dies nur als Aktion möglich.\\
+\\
+\\
+\\
+\\
+\\
+\\
+\textbf{28. Was ist (bedingt durch den Mangel an referentieller Transparenz) die entscheidende Eigenschaft, die Aktionen von reinen Funktionen unterscheidet?}
+\\
+Aktionen k\"onnen je nach Kontext der Ausf\"uhrung bei gleicher Eingabe unterschiedliche Ergebnisse liefern. Funktionen liefern unter gleicher Eingabe immer gleiche Ergebnisse
+Aktionen erlauben eine Fehlerbehandlung. Dadurch können Dinge, die unvorhersehbar eintreten abgefangen werden.  Dadurch kann auf den Mangel an referentieller Transparenz eingegangen werden.\\
+\\
+\\
+\\
+\\
+\\
+\\
+\end{document}
