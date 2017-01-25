@@ -179,7 +179,9 @@ foldr ist auf alle Daten vom Typ Foldable anwendbar. Jeder Datentyp in Foldable 
 \\
 \\
 \\
-garnicht?
+Da Haskell lazy evaluation betreibt kann ein foldr terminieren, sollte eine Fnktionsbedingung nicht mehr erf\"ullt sein.\\
+z.B.\\
+foldr das auf eine Zyklische Liste vom Typ Bool auf ein False gefaltet wird kann mit der oder-Funktion terminieren, sollte sie ein True beinhalten, da ab dem Zeitpunkt der rest der liste nicht mehr ausgewertet wird. 
 \\
 \\
 \\
